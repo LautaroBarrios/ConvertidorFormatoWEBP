@@ -1,0 +1,31 @@
+:root {
+  display: flex;
+  height: 100svh;
+  width: "100%";
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(1px + 2vmin);
+  background-color: #111114;
+  color: white;
+  text-align: center;
+  padding: 10px 15px;
+
+}
+
+.custom-link {
+  display: flex;
+  padding: 10px 15px;
+  background-color: #069165;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-link:hover {
+  background-color: #066849;
+}
