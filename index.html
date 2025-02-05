@@ -8,8 +8,28 @@
     <link rel="stylesheet" href="assets/index.css" />
   </head>
   <body>
-      <h1>CONVERTIDOR DE IMÁGENES A FORMATO WEBP</h1>
-      <input type="file" id="imageInput" />
+    <h1>CONVERTIDOR DE IMÁGENES A FORMATO WEBP</h1>
+    <section>
+      <div>
+        <label for="imageInput">Seleccionar IMAGEN</label>
+        <br /><br />
+        <input type="file" id="imageInput" accept="image/*" />
+      </div>
+
+      <div>
+        <label for="folderInput">Seleccionar CARPETA</label>
+        <br /><br />
+        <input
+          type="file"
+          id="folderInput"
+          webkitdirectory
+          directory
+          multiple
+        />
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="assets/convert.js"></script>
   </body>
 </html>

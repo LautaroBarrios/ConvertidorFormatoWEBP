@@ -1,61 +1,81 @@
+// Cargar la librería JSZip para manejar el archivo ZIP
+const zip = new JSZip();
+
 // Función para convertir una imagen a formato WEBP
 function convertToWebP(imageFile, callback) {
-  // Crear un elemento de imagen para cargar el archivo
   const img = new Image();
-
-  // Leer el archivo de imagen como URL
   const reader = new FileReader();
+
   reader.onload = function (event) {
     img.src = event.target.result;
   };
 
   reader.readAsDataURL(imageFile);
 
-  // Cuando la imagen se ha cargado
   img.onload = function () {
-    // Crear un canvas para dibujar la imagen
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    // Ajustar las dimensiones del canvas al tamaño de la imagen
     canvas.width = img.width;
     canvas.height = img.height;
-
-    // Dibujar la imagen en el canvas
     ctx.drawImage(img, 0, 0);
 
-    // Convertir el contenido del canvas a formato WEBP
     canvas.toBlob(function (blob) {
-      // Llamar al callback con el archivo en formato WEBP
-      callback(blob);
+      callback(blob, imageFile.name);
     }, "image/webp");
   };
 }
 
-// Ejemplo de uso:
-let downloadCounter = 1; // Contador para el nombre de las imágenes
-
+// Manejo de archivos individuales
 const fileInput = document.getElementById("imageInput");
 fileInput.addEventListener("change", function (event) {
   const imageFile = event.target.files[0];
 
   if (imageFile) {
-    convertToWebP(imageFile, function (webpBlob) {
-      // Crear un enlace de descarga para la imagen WEBP
-      const downloadLink = document.createElement("a");
-      downloadLink.href = URL.createObjectURL(webpBlob);
-
-      // Establecer el nombre del archivo descargado de manera única
-      downloadLink.download = `image${downloadCounter}.webp`;
-      downloadLink.classList.add("custom-link");
-      downloadLink.textContent = `Descargar ${downloadCounter} imagen convertida a WEBP`;
-
-      // Incrementar el contador para el próximo enlace
-      downloadCounter++;
-
-      // Añadir el enlace a la página
-      document.body.appendChild(downloadLink);
+    convertToWebP(imageFile, function (webpBlob, originalName) {
+      downloadFile(webpBlob, originalName.replace(/\.[^/.]+$/, ".webp"));
     });
   }
 });
 
+// Manejo de carpetas (múltiples imágenes)
+const folderInput = document.getElementById("folderInput");
+folderInput.addEventListener("change", function (event) {
+  const files = event.target.files;
+
+  if (files.length > 0) {
+    zipFiles(files);
+  }
+});
+
+// Función para empaquetar imágenes en un ZIP
+function zipFiles(files) {
+  const zip = new JSZip();
+  let processedCount = 0;
+
+  Array.from(files).forEach((file) => {
+    convertToWebP(file, function (webpBlob, originalName) {
+      const newFileName = originalName.replace(/\.[^/.]+$/, ".webp");
+
+      zip.file(newFileName, webpBlob);
+      processedCount++;
+
+      // Si todas las imágenes se han convertido, generar el ZIP
+      if (processedCount === files.length) {
+        zip.generateAsync({ type: "blob" }).then(function (zipBlob) {
+          downloadFile(zipBlob, "imagenes_convertidas.zip");
+        });
+      }
+    });
+  });
+}
+
+// Función para descargar un archivo
+function downloadFile(blob, fileName) {
+  const downloadLink = document.createElement("a");
+  downloadLink.href = URL.createObjectURL(blob);
+  downloadLink.download = fileName;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}

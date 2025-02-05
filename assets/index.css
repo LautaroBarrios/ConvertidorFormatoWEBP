@@ -5,12 +5,32 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: calc(1px + 2vmin);
-  background-color: #111114;
-  color: white;
+  background-color: rgb(26, 26, 26);
   text-align: center;
-  padding: 10px 15px;
+  font-family: "Arial Narrow", Arial, sans-serif;
+}
 
+h1 {
+  font-size: calc(10px + 2vmin);
+  color: #e0e800;
+}
+
+input,
+p {
+  color: #e0e800;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+label {
+  font-size: calc(1px + 2vmin);
+  color: #e0e800;
 }
 
 .custom-link {
@@ -28,4 +48,30 @@
 
 .custom-link:hover {
   background-color: #066849;
+}
+
+/* Oculta el input real */
+input[type="file"] {
+  display: none;
+}
+
+/* Personalización del label (botón) */
+label {
+  background-color: #e0e800;
+  color: rgb(26, 26, 26);
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.1s ease-in-out;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: min-content;
+}
+
+/* Efecto cuando se presiona */
+label:active {
+  background-color: #9ea307;
+  transform: scale(0.98);
 }
