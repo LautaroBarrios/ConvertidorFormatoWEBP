@@ -15,6 +15,11 @@ h1 {
   color: #e0e800;
 }
 
+h2{
+  font-size: calc(10px + 1vmin);
+  color: #e0e800;
+}
+
 input,
 p {
   color: #e0e800;
